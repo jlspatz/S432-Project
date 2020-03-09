@@ -32,6 +32,7 @@ We are interested in finding out what motivates a person to dedicate a large chu
 
 ```{r load-data, include=FALSE}
 attendance.data = read.csv("CFBeattendance.csv")
+newtime = str_split(attendance.data$Time, ":")
 ```
 
 The data analyzed contains information from American College Division 1 Football games spanning 2000 to 2018. The data is specifically the home games for the selected teams, with the corresponding attendance rates for the stadium played in. There are 63 teams recorded, totaling 6672 home games. The columns selected include date of the game, the home team, the opponent, time of game, rank of both teams, whether the game was televised, the result of the game, stadium capacity and fill rate, whether there is a new coach, as well as the weather metrics during the game (precipitation, snow, temperature maximum and minimum). 
@@ -47,6 +48,9 @@ What are the relationships between the predictors and attendance? We’re lookin
 
 ```{r pairs-plot}
 pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)#weather
+par(mfrow = c(1,2))
+hist(attendance.data$Stadium.Capacity, main = "Histogram of Stadium Capacity")
+hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate")
 ```
 
 ### 2. Analysis
@@ -70,6 +74,14 @@ boxplot(Attendance/1000~Current.Losses,data=attendance.data,
         main = "Attendance (Thousands) vs Losses")
 boxplot(Attendance/1000~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
         main = "Attendance (Thousands) vs Year")
+
+
+boxplot(Fill.Rate~Current.Wins,data=attendance.data,
+        main = "Fill Rate vs Wins")
+boxplot(Fill.Rate~Current.Losses,data=attendance.data,
+        main = "Fill Rate vs Losses")
+boxplot(Fill.Rate~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
+        main = "Fill Rate vs Year")
 
 ```
 
