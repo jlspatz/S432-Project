@@ -3,6 +3,19 @@ title: "Checkpoint 2"
 output: html_document
 ---
 
+##If a Hoosier drops a pass in the end zone, but there's no one there to see it, did it ever really happen?
+
+*A few sentences describing why this project is interesting to you
+
+##Introduction
+A description of how the data came about and what things you may be investigating. What is the data? What are you trying to do? How did you get the data? Why should anyone care about any of this?
+
+##EDA
+
 ```{r}
-read.csv("CFBeattendance.csv")
+attendance.data = read.csv("CFBeattendance.csv")
 ```
+
+
+
+
