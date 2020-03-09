@@ -3,6 +3,10 @@ title: "Checkpoint 2"
 output: html_document
 ---
 
+##If a Hoosier drops a pass in the end zone, but there's no one there to see it, did it ever really happen?
+
+*A few sentences describing why this project is interesting to you
+
 # I. Introduction
 
 ```{r load-data}
