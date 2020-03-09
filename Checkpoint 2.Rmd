@@ -3,6 +3,31 @@ title: "Checkpoint 2"
 output: html_document
 ---
 
-```{r}
+# I. Introduction
+
+```{r load-data}
 read.csv("CFBeattendance.csv")
 ```
+
+# II. Exploratory Data Analysis
+
+## A. Continouous Predictors
+
+### 1. Plots
+
+```{r pairs-plot}
+
+
+```
+
+### 2. Analysis
+
+## B. Discrete Predictors
+
+### 1. Plots
+
+```{r discrete-boxplots}
+
+```
+
+### 2. Analysis
