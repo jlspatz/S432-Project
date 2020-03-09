@@ -46,7 +46,11 @@ What are the relationships between the predictors and attendance? We’re lookin
 ### 1. Plots
 
 ```{r pairs-plot}
-
+pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)#weather
+```
+```{r}
+boxplot(Attendance~Current.Wins,data=attendance.data) #currentwins&losses
+boxplot(Attendance~Current.Losses,data=attendance.data)
 
 ```
 
