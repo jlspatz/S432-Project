@@ -32,6 +32,7 @@ We are interested in finding out what motivates a person to dedicate a large chu
 
 ```{r load-data, include=FALSE}
 attendance.data = read.csv("CFBeattendance.csv")
+newtime = str_split(attendance.data$Time, ":")
 ```
 
 The data analyzed contains information from American College Division 1 Football games spanning 2000 to 2018. The data is specifically the home games for the selected teams, with the corresponding attendance rates for the stadium played in. There are 63 teams recorded, totaling 6672 home games. The columns selected include date of the game, the home team, the opponent, time of game, rank of both teams, whether the game was televised, the result of the game, stadium capacity and fill rate, whether there is a new coach, as well as the weather metrics during the game (precipitation, snow, temperature maximum and minimum). 
@@ -59,9 +60,12 @@ hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate")
 ### 1. Plots
 
 ```{r discrete-boxplots}
-boxplot(Attendance/1000~Current.Wins,data=attendance.data) #currentwins&losses
-boxplot(Attendance/1000~Current.Losses,data=attendance.data)
-boxplot(Attendance/1000~Year, notch=FALSE, varwidth=FALSE, data=attendance.data)
+boxplot(Attendance/1000~Current.Wins,data=attendance.data,
+        main = "Attendance (Thousands) vs Wins")
+boxplot(Attendance/1000~Current.Losses,data=attendance.data,
+        main = "Attendance (Thousands) vs Losses")
+boxplot(Attendance/1000~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
+        main = "Attendance (Thousands) vs Year")
 ```
 
 ### 2. Analysis
