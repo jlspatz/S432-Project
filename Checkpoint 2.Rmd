@@ -2,6 +2,27 @@
 title: "Checkpoint 2"
 output: html_document
 ---
+```{r setup, include=FALSE}
+# General set-up for the report.
+# I find this useful, but you may improve upon, ignore, or remove
+#  (possibly at your own peril).
+# Tasks accomplished:
+# Don't print out code
+# Save results so that code blocks aren't re-run unless code
+# changes (cache), _or_ a relevant earlier code block changed (autodep),
+# don't clutter R output with messages or warnings (message, warning)
+library(MASS)
+library(knitr)
+library(tidyverse)
+library(dplyr)
+library(ggthemes)
+library(gridExtra)
+opts_chunk$set(echo=FALSE,
+               cache=TRUE, autodep=TRUE,
+               message=FALSE, warning=FALSE)
+# Turn off meaningless clutter in summary() output
+options(show.signif.stars=FALSE)
+```
 
 ##If a Hoosier drops a pass in the end zone, but there's no one there to see it, did it ever really happen?
 
