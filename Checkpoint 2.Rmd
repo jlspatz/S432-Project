@@ -56,12 +56,21 @@ pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)#weather
 ### 1. Plots
 
 ```{r discrete-boxplots}
+
 boxplot(Attendance~Current.Wins,data=attendance.data) 
 boxplot(Attendance~Current.Losses,data=attendance.data)
 boxplot(Attendance~Tailgating,data=attendance.data)
 boxplot(Attendance~New.Coach,data=attendance.data)
 boxplot(Attendance~Year,data=attendance.data)
 boxplot(Attendance~Month,data= attendance.data)
+
+boxplot(Attendance/1000~Current.Wins,data=attendance.data,
+        main = "Attendance (Thousands) vs Wins")
+boxplot(Attendance/1000~Current.Losses,data=attendance.data,
+        main = "Attendance (Thousands) vs Losses")
+boxplot(Attendance/1000~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
+        main = "Attendance (Thousands) vs Year")
+
 ```
 
 ### 2. Analysis
