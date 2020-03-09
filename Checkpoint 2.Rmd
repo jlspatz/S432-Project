@@ -66,6 +66,13 @@ boxplot(Attendance/1000~Current.Losses,data=attendance.data,
         main = "Attendance (Thousands) vs Losses")
 boxplot(Attendance/1000~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
         main = "Attendance (Thousands) vs Year")
+
+boxplot(Fill.Rate~Current.Wins,data=attendance.data,
+        main = "Fill Rate vs Wins")
+boxplot(Fill.Rate~Current.Losses,data=attendance.data,
+        main = "Fill Rate vs Losses")
+boxplot(Fill.Rate~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
+        main = "Fill Rate vs Year")
 ```
 
 ### 2. Analysis
