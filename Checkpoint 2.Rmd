@@ -47,6 +47,9 @@ What are the relationships between the predictors and attendance? We’re lookin
 
 ```{r pairs-plot}
 pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)#weather
+par(mfrow = c(1,2))
+hist(attendance.data$Stadium.Capacity, main = "Histogram of Stadium Capacity")
+hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate")
 ```
 
 ### 2. Analysis
