@@ -68,6 +68,14 @@ attendance.data = attendance.data[-c(5436,5443,5450,5457),]
 
 ```{r incorrect-data}
 attendance.data[4424, 24] = 12
+
+rutgers = attendance.data[which(attendance.data$Team=="Rutgers"),]
+yr = 2000
+while(yr<2013){
+        rutgers$Conference[which(rutgers$Year==yr)] = "Big East"
+        yr = yr+1
+}
+attendance.data$Conference[which(attendance.data$Team=="Rutgers")] = rutgers$Conference
 ```
 
 
