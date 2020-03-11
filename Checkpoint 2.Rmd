@@ -76,6 +76,14 @@ while(yr<2013){
         yr = yr+1
 }
 attendance.data$Conference[which(attendance.data$Team=="Rutgers")] = rutgers$Conference
+
+smu = attendance.data[which(attendance.data$Team=="SMU"),]
+yr = 2005
+while(yr<2013){
+        smu$Conference[which(smu$Year==yr)] = "CUSA"
+        yr = yr+1
+}
+attendance.data$Conference[which(attendance.data$Team=="SMU")] = smu$Conference
 ```
 
 
