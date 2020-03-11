@@ -44,7 +44,12 @@ What are the relationships between the predictors and attendance? We’re lookin
 
 ## A. Exploring the Variables
 
+```{r quantile ranges}
+quantile(attendance.data$Attendance, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
+```
+
 ```{r response-histograms}
+par(mfrow = c(3,3))
 hist(attendance.data$Attendance/1000, breaks = 24,
      main = "Histogram of Attendance")
 hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate")
@@ -54,6 +59,8 @@ hist(attendance.data$Stadium.Capacity, main = "Histogram of Stadium Capacity")
 hist(attendance.data$Year, main = "Histogram of Year")
 hist(attendance.data$Month, main = "Histogram of Month")
 ```
+
+In order to understand the data provided, the variables were first analyzed in histograms. Attendance is distributed fairly evenly with most of the game attendance between 20,000 and 62,000.
 
 ```{r bad-data-removal}
 attendance.data = attendance.data[-c(5436,5443,5450,5457),]
@@ -70,9 +77,6 @@ attendance.data[4424, 24] = 12
 
 ```{r pairs-plot}
 pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)#weather
-par(mfrow = c(1,2))
-hist(attendance.data$Stadium.Capacity, main = "Histogram of Stadium Capacity")
-hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate")
 ```
 
 ### 2. Analysis
