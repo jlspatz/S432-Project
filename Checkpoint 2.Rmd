@@ -42,7 +42,29 @@ What are the relationships between the predictors and attendance? We’re lookin
 
 # II. Exploratory Data Analysis
 
-## A. Continouous Predictors
+## A. Exploring the Variables
+
+```{r response-histograms}
+hist(attendance.data$Attendance/1000, breaks = 24,
+     main = "Histogram of Attendance")
+hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate")
+hist(attendance.data$Current.Wins, main = "Histogram of Current Wins")
+hist(attendance.data$Current.Losses, main = "Histogram of Current Losses")
+hist(attendance.data$Stadium.Capacity, main = "Histogram of Stadium Capacity")
+hist(attendance.data$Year, main = "Histogram of Year")
+hist(attendance.data$Month, main = "Histogram of Month")
+```
+
+```{r bad-data-removal}
+attendance.data = attendance.data[-c(5436,5443,5450,5457),]
+```
+
+```{r incorrect-data}
+attendance.data[4424, 24] = 12
+```
+
+
+## B. Continouous Predictors
 
 ### 1. Plots
 
@@ -55,34 +77,37 @@ hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate")
 
 ### 2. Analysis
 
-## B. Discrete Predictors
+## C. Discrete Predictors
 
 ### 1. Plots
 
 ```{r discrete-boxplots}
 
-boxplot(Attendance~Current.Wins,data=attendance.data) 
-boxplot(Attendance~Current.Losses,data=attendance.data)
-boxplot(Attendance~Tailgating,data=attendance.data)
-boxplot(Attendance~New.Coach,data=attendance.data)
-boxplot(Attendance~Year,data=attendance.data)
-boxplot(Attendance~Month,data= attendance.data)
-
+boxplot(Attendance/1000~Tailgating,data=attendance.data,
+        main = "Attendance (Thousands) vs Tailgating")
+boxplot(Attendance/1000~New.Coach,data=attendance.data,
+        main = "Attendance (Thousands) vs New Coach")
 boxplot(Attendance/1000~Current.Wins,data=attendance.data,
         main = "Attendance (Thousands) vs Wins")
 boxplot(Attendance/1000~Current.Losses,data=attendance.data,
         main = "Attendance (Thousands) vs Losses")
 boxplot(Attendance/1000~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
         main = "Attendance (Thousands) vs Year")
+boxplot(Attendance/1000~Month,data=attendance.data,
+        main = "Attendance (Thousands) vs Month")
 
-
+boxplot(Fill.Rate~Tailgating,data=attendance.data,
+        main = "Fill Rate vs Tailgating")
+boxplot(Fill.Rate~New.Coach,data=attendance.data,
+        main = "Fill Rate (Thousands) vs New Coach")
 boxplot(Fill.Rate~Current.Wins,data=attendance.data,
         main = "Fill Rate vs Wins")
 boxplot(Fill.Rate~Current.Losses,data=attendance.data,
         main = "Fill Rate vs Losses")
 boxplot(Fill.Rate~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
         main = "Fill Rate vs Year")
-
+boxplot(Fill.Rate~Month,data=attendance.data,
+        main = "Fill Rate vs Month")
 ```
 
 ### 2. Analysis
