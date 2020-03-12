@@ -17,6 +17,7 @@ library(tidyverse)
 library(dplyr)
 library(ggthemes)
 library(gridExtra)
+library(ggplot2)
 opts_chunk$set(echo=FALSE,
                cache=TRUE, autodep=TRUE,
                message=FALSE, warning=FALSE)
@@ -150,7 +151,15 @@ In the data set, there were multiple teams that were placed into the wrong confe
 ### 1. Plots
 
 ```{r pairs-plot}
-pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)#weather
+pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data) #weather
+```
+**Since the data are cummulated over years, it is good to see the relationships between each year of attendance and other factors. 
+
+```{r}
+TemMax <- ggplot(attendance.data, aes(x=TMAX, y=Attendance/1000)) + geom_point()
+TemMax + facet_grid(attendance.data$Year)
+TemMin <- ggplot(attendance.data, aes(x=TMIN, y=Attendance/1000)) + geom_point()
+TemMin + facet_grid(attendance.data$Year)
 ```
 
 ### 2. Analysis
