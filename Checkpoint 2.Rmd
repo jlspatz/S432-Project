@@ -104,6 +104,18 @@ while(yr<2019){
         yr = yr+1
 }
 attendance.data$Conference[which(attendance.data$Team=="South Alabama")] = south_alabama$Conference
+
+west_virginia = attendance.data[which(attendance.data$Team=="West Virginia"),]
+yr = 2000
+while(yr<2012){
+        west_virginia$Conference[which(west_virginia$Year==yr)] = "Big East"
+        yr = yr+1
+}
+attendance.data$Conference[which(attendance.data$Team=="West Virginia")] = west_virginia$Conference
+
+memphis = attendance.data[which(attendance.data$Team=="Memphis"),]
+memphis$Conference[which(memphis$Year==2013)] = "AAC"
+attendance.data$Conference[which(attendance.data$Team=="Memphis")] = memphis$Conference
 ```
 
 
