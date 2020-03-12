@@ -120,6 +120,10 @@ attendance.data$Conference[which(attendance.data$Team=="Memphis")] = memphis$Con
 mid_tennessee = attendance.data[which(attendance.data$Team=="Middle Tennessee"),]
 mid_tennessee$Conference[which(mid_tennessee$Year==2001)] = "Sun Belt"
 attendance.data$Conference[which(attendance.data$Team=="Middle Tennessee")] = mid_tennessee$Conference
+
+byu = attendance.data[which(attendance.data$Team=="BYU"),]
+byu$Conference[which(byu$Year==2011)] = "Independent"
+attendance.data$Conference[which(attendance.data$Team=="BYU")] = byu$Conference
 ```
 
 
