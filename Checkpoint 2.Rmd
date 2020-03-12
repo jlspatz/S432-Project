@@ -116,6 +116,10 @@ attendance.data$Conference[which(attendance.data$Team=="West Virginia")] = west_
 memphis = attendance.data[which(attendance.data$Team=="Memphis"),]
 memphis$Conference[which(memphis$Year==2013)] = "AAC"
 attendance.data$Conference[which(attendance.data$Team=="Memphis")] = memphis$Conference
+
+mid_tennessee = attendance.data[which(attendance.data$Team=="Middle Tennessee"),]
+mid_tennessee$Conference[which(mid_tennessee$Year==2001)] = "Sun Belt"
+attendance.data$Conference[which(attendance.data$Team=="Middle Tennessee")] = mid_tennessee$Conference
 ```
 
 
