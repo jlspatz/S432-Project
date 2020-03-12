@@ -126,6 +126,8 @@ byu$Conference[which(byu$Year==2011)] = "Independent"
 attendance.data$Conference[which(attendance.data$Team=="BYU")] = byu$Conference
 ```
 
+In the data set, there were multiple teams that were placed into the wrong conferences at certain points in time. The data was fixed to correct this issue. 
+
 
 ## B. Continouous Predictors
 
