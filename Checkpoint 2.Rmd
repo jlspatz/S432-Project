@@ -63,7 +63,7 @@ hist(attendance.data$Month, main = "Histogram of Month")
 In order to understand the data provided, the variables were first analyzed in histograms. Attendance is distributed fairly evenly with most of the game attendance between 20,000 and 62,000. Fill rate sometimes exceeds 100% when some stadiums are over capacity, but there is a skew to the left. The current wins and losses both are skewed to the right, with most at 0-2. Stadium capactity is seemingly distributed evenly throughout, with some peaks at different points. From 2000-2018, there are even amounts of data points for the home games, making is easier to observe trends in the given time frame. Regarding the months recorded, the games are all in the fall during the main college football season. The games that were played in the spring were removed in order to have consistent analysis of the data. 
 
 ```{r bad-data-removal}
-attendance.data = attendance.data[-c(5436,5443,5450,5457),]
+attendance.data = attendance.data[-c(5436,5443,5450,5457, 4522, 4524, 4526, 4528, 4530, 4532),]
 ```
 
 ```{r incorrect-data}
@@ -124,6 +124,22 @@ attendance.data$Conference[which(attendance.data$Team=="Middle Tennessee")] = mi
 byu = attendance.data[which(attendance.data$Team=="BYU"),]
 byu$Conference[which(byu$Year==2011)] = "Independent"
 attendance.data$Conference[which(attendance.data$Team=="BYU")] = byu$Conference
+
+fiu = attendance.data[which(attendance.data$Team=="FIU"),]
+yr = 2002
+while(yr<2005){
+        fiu$Conference[which(fiu$Year==yr)] = "FCS"
+        yr = yr+1
+}
+attendance.data$Conference[which(attendance.data$Team=="FIU")] = fiu$Conference
+
+georgia_st = attendance.data[which(attendance.data$Team=="Georgia State"),]
+yr = 2011
+while(yr<2013){
+        georgia_st$Conference[which(georgia_st$Year==yr)] = "FCS"
+        yr = yr+1
+}
+attendance.data$Conference[which(attendance.data$Team=="Georgia State")] = georgia_st$Conference
 ```
 
 In the data set, there were multiple teams that were placed into the wrong conferences at certain points in time. The data was fixed to correct this issue. 
