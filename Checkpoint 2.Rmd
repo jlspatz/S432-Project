@@ -47,6 +47,7 @@ What are the relationships between the predictors and attendance? We’re lookin
 
 ```{r quantile ranges}
 quantile(attendance.data$Attendance, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
+quantile(attendance.data$Stadium.Capacity, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
 ```
 
 ```{r response-histograms}
