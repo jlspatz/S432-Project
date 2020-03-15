@@ -1,5 +1,5 @@
 ---
-title: "Checkpoint 2"
+title: "If a Hoosier drops a pass in the end zone, but there's no one there to see it, did it ever really happen? -- Checkpoint 2"
 output: html_document
 ---
 ```{r setup, include=FALSE}
@@ -25,7 +25,7 @@ opts_chunk$set(echo=FALSE,
 options(show.signif.stars=FALSE)
 ```
 
-##If a Hoosier drops a pass in the end zone, but there's no one there to see it, did it ever really happen?
+# By: Jordan Majoros, Minwoo Lee, Lester Blumberg, and Joseph Spatz
 
 We are interested in finding out what motivates a person to dedicate a large chunk of their Saturday to attending a college football game. The conclusions that can be learned by analyzing this dataset have uses beyond just predicting future college football attendance. They can also be used, with much care, to understand the decisions people make when attending other events, athletic and non-athletic. Another reason why this dataset is interesting to our team is that it allows us to relate to behavior we have observed in our own college experiences, such as in game days during the day or at night and the influence of the weather.
 
@@ -45,10 +45,17 @@ What are the relationships between the predictors and attendance? We’re lookin
 
 ## A. Exploring the Variables
 
+### 1. Quantiles
 ```{r quantile ranges}
 quantile(attendance.data$Attendance, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
 quantile(attendance.data$Stadium.Capacity, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
 ```
+
+ADD ANALYSIS
+ADD ANALYSIS
+ADD ANALYSIS
+
+### 2. Histograms
 
 ```{r response-histograms}
 par(mfrow = c(3,3))
@@ -154,9 +161,10 @@ In the data set, there were multiple teams that were placed into the wrong confe
 ```{r pairs-plot}
 pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data) #weather
 ```
+
 **Since the data on the plot are overlapped beacuase they are cummulated over years, it is good to see the relationships between each year of attendance and other factors.
 
-```{r}
+```{r continuous-over-years}
 TemMax_Year <- ggplot(attendance.data, aes(x=TMAX, y=Attendance/1000)) + geom_point()
 TemMax_Year + facet_grid(attendance.data$Year)
 
@@ -180,31 +188,30 @@ Snwd_Year + facet_grid(attendance.data$Year)
 ### 1. Plots
 
 ```{r discrete-boxplots}
-
 boxplot(Attendance/1000~Tailgating,data=attendance.data,
-        main = "Attendance (Thousands) vs Tailgating")
+        ylab = "Attendance (Thousands)", main = "Attendance vs Tailgating")
 boxplot(Attendance/1000~New.Coach,data=attendance.data,
-        main = "Attendance (Thousands) vs New Coach")
+        ylab = "Attendance (Thousands)", main = "Attendance vs New Coach")
 boxplot(Attendance/1000~Current.Wins,data=attendance.data,
-        main = "Attendance (Thousands) vs Wins")
+        ylab = "Attendance (Thousands)", main = "Attendance vs Wins")
 boxplot(Attendance/1000~Current.Losses,data=attendance.data,
-        main = "Attendance (Thousands) vs Losses")
-boxplot(Attendance/1000~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
-        main = "Attendance (Thousands) vs Year")
+        ylab = "Attendance (Thousands)", main = "Attendance vs Losses")
+boxplot(Attendance/1000~Year, data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Year")
 boxplot(Attendance/1000~Month,data=attendance.data,
-        main = "Attendance (Thousands) vs Month")
+        ylab = "Attendance (Thousands)", main = "Attendance vs Month")
 
-boxplot(Fill.Rate~Tailgating,data=attendance.data,
+boxplot(Fill.Rate~Tailgating,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Tailgating")
-boxplot(Fill.Rate~New.Coach,data=attendance.data,
+boxplot(Fill.Rate~New.Coach,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate (Thousands) vs New Coach")
-boxplot(Fill.Rate~Current.Wins,data=attendance.data,
+boxplot(Fill.Rate~Current.Wins,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Wins")
-boxplot(Fill.Rate~Current.Losses,data=attendance.data,
+boxplot(Fill.Rate~Current.Losses,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Losses")
-boxplot(Fill.Rate~Year, notch=FALSE, varwidth=FALSE, data=attendance.data,
+boxplot(Fill.Rate~Year, data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Year")
-boxplot(Fill.Rate~Month,data=attendance.data,
+boxplot(Fill.Rate~Month,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Month")
 ```
 
