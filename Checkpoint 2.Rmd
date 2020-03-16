@@ -60,19 +60,22 @@ ADD ANALYSIS
 
 ```{r response-histograms}
 par(mfrow = c(3,3))
-ggplot(attendance.data, aes(x=Attendance/1000)) + geom_histogram(bins=24, color = "black", fill = "skyblue") + labs(title = "Histogram of Attendance")
-ggplot(attendance.data, aes(x=Fill.Rate)) + geom_histogram(bins=24, color = "black", fill = "pink") + labs(title = ("Histogram of Fill Rate"))
-hist(attendance.data$Current.Wins, main = "Histogram of Current Wins")
-hist(attendance.data$Current.Losses, main = "Histogram of Current Losses")
-hist(attendance.data$Stadium.Capacity/1000, main = "Histogram of Stadium Capacity")
-hist(attendance.data$Year, main = "Histogram of Year")
-hist(attendance.data$Month, main = "Histogram of Month")
-```
-```{r}
-ggplot(attendance.data, aes(x=Fill.Rate)) + geom_histogram(bins=24, color = "black", fill = "pink") + labs(title = ("Histogram of Fill Rate"))
+hist(attendance.data$Attendance/1000, main = "Histogram of Attendance",
+     xlab = "Attendance (Thousands)")
+hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate",
+     xlab = "Fill Rate")
+hist(attendance.data$Current.Wins, main = "Histogram of Current Wins",
+     xlab = "Current Wins")
+hist(attendance.data$Current.Losses, main = "Histogram of Current Losses",
+     xlab = "Current Losses")
+hist(attendance.data$Stadium.Capacity/1000,
+     main = "Histogram of Stadium Capacity",
+     xlab = "Stadium Capacity (Thousands)")
+hist(attendance.data$Year, main = "Histogram of Year", xlab = "Year")
+hist(attendance.data$Month, main = "Histogram of Month", xlab = "Month")
 ```
 
-In order to understand the data provided, the variables were first analyzed in histograms. Attendance is distributed fairly evenly with most of the game attendance between 20,000 and 62,000. Fill rate sometimes exceeds 100% when some stadiums are over capacity, but there is a skew to the left. The current wins and losses both are skewed to the right, with most at 0-2. Stadium capactity is seemingly distributed evenly throughout, with some peaks at different points. From 2000-2018, there are even amounts of data points for the home games, making it easier to observe trends in the given time frame. Regarding the months recorded, the games are all in the fall during the main college football season. The games that were played in the spring were removed in order to have consistent analysis of the data. Also, one game was incorrectly marked as occurring in January instead of December, so we fixed that.
+In order to understand the data provided, the variables were first analyzed in histograms. Attendance is distributed fairly evenly with most of the game attendance between 20,000 and 62,000. Fill rate sometimes exceeds 100% when some stadiums are over capacity, but there is a skew to the left. The current wins and losses both are skewed to the right, with most at 0-2. This makes sense intuitively as every team has to begin the season with 0 wins and 0 losses. Stadium capactity is seemingly distributed evenly throughout, with some peaks at different points. From 2000-2018, there are even amounts of data points for the home games, making it easier to observe trends in the given time frame. Regarding the months recorded, the games are all in the fall during the main college football season. The games that were played in April were just Memphis spring games that were somehow included in the dataset. We removed those games in order to have consistent analysis of the data. Also, one game was incorrectly marked as occurring in January instead of December, so we fixed that.
 
 ```{r bad-data-removal}
 attendance.data = attendance.data[-c(5436,5443,5450,5457, 4522, 4524, 4526, 4528, 4530, 4532),]
