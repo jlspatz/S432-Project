@@ -161,14 +161,14 @@ In the data set, there were multiple teams that were placed into the wrong confe
 ### 1. Plots
 
 ```{r pairs-plot}
-pairs(Attendance~TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data) #weather
+pairs(Attendance~Fill.Rate+TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)
 ```
 
 **Since the data on the plot are overlapped beacuase they are cummulated over years, it is good to see the relationships between each year of attendance and other factors.
 
 ```{r continuous-over-years}
 TemMax_Year <- ggplot(attendance.data, aes(x=TMAX, y=Attendance/1000)) + geom_point()
-TemMax_Year + facet_grid(attendance.data$Year)
+TemMax_Year + geom_text(label = attendance.data$Year)
 
 TemMin_Year <- ggplot(attendance.data, aes(x=TMIN, y=Attendance/1000)) + geom_point()
 TemMin_Year + facet_grid(attendance.data$Year)
@@ -187,9 +187,9 @@ Snwd_Year + facet_grid(attendance.data$Year)
 
 ## C. Discrete Predictors
 
-### 1. Plots
+### 1. Attendance Plots
 
-```{r discrete-boxplots}
+```{r attendance-boxplots, fig.width=10}
 boxplot(Attendance/1000~Tailgating,data=attendance.data,
         ylab = "Attendance (Thousands)", main = "Attendance vs Tailgating")
 boxplot(Attendance/1000~New.Coach,data=attendance.data,
@@ -202,7 +202,15 @@ boxplot(Attendance/1000~Year, data=attendance.data,
         ylab = "Attendance (Thousands)", main = "Attendance vs Year")
 boxplot(Attendance/1000~Month,data=attendance.data,
         ylab = "Attendance (Thousands)", main = "Attendance vs Month")
+boxplot(Attendance/1000~Conference, data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Conference",
+        names = c("AAC","ACC","B10","B12","BE","CUSA","FCS",
+                  "Ind.","MAC","MWC","P12","SEC", "SB","WAC"))
+```
 
+### 2. Fill Rate Plots
+
+```{r fill-rate-boxplots, fig.width=10}
 boxplot(Fill.Rate~Tailgating,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Tailgating")
 boxplot(Fill.Rate~New.Coach,data=attendance.data, ylab = "Fill Rate",
@@ -215,6 +223,10 @@ boxplot(Fill.Rate~Year, data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Year")
 boxplot(Fill.Rate~Month,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Month")
+boxplot(Fill.Rate~Conference, data=attendance.data,
+        main = "Fill Rate vs Conference",
+        names = c("AAC","ACC","B10","B12","BE","CUSA","FCS",
+                  "Ind.","MAC","MWC","P12","SEC", "SB","WAC"))
 ```
 
-### 2. Analysis
+### 3. Analysis
