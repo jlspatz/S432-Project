@@ -27,7 +27,7 @@ options(show.signif.stars=FALSE)
 
 # By: Jordan Majoros, Minwoo Lee, Lester Blumberg, and Joseph Spatz
 
-We are interested in finding out what motivates a person to dedicate a large chunk of their Saturday to attending a college football game. The conclusions that can be learned by analyzing this dataset have uses beyond just predicting future college football attendance. They can also be used, with much care, to understand the decisions people make when attending other events, athletic and non-athletic. Another reason why this dataset is interesting to our team is that it allows us to relate to behavior we have observed in our own college experiences, such as in game days during the day or at night and the influence of the weather.
+We are interested in finding out what motivates a person to dedicate a large chunk of their Saturday to attending a college football game. The conclusions that can be learned by analyzing this dataset have uses beyond just predicting future college football attendance. They can also be used, with much care, to understand the decisions people make when attending other events, athletic and non-athletic. Another reason why this dataset is interesting to our team is that we can relate our findings to behavior we have observed in our own college experiences.
 
 # I. Introduction
 
@@ -36,9 +36,9 @@ attendance.data = read.csv("CFBeattendance.csv")
 newtime = str_split(attendance.data$Time, ":")
 ```
 
-The data analyzed contains information from American College Division 1 Football games spanning 2000 to 2018. The data is specifically the home games for the selected teams, with the corresponding attendance rates for the stadium played in. There are 63 teams recorded, totaling 6672 home games. The columns selected include date of the game, the home team, the opponent, time of game, rank of both teams, whether the game was televised, the result of the game, stadium capacity and fill rate, whether there is a new coach, as well as the weather metrics during the game (precipitation, snow, temperature maximum and minimum). 
+The data analyzed contains information primarily from American FBS (and its Division I-A predecessor) College Football games spanning 2000 to 2018. The data is specifically the home games for the selected teams, with the corresponding attendance rates for the stadium played in. There are `r length(levels(attendance.data$Team))` teams recorded, totaling 6672 home games. The columns selected include date of the game, the home team, the opponent, time of game, rank of both teams, whether the game was televised, the result of the game, stadium capacity and fill rate, whether there is a new coach, as well as the weather metrics during the game (precipitation, snowfall, snow depth, temperature maximum, and temperature minimum). 
 
-What are the relationships between the predictors and attendance? We’re looking at the relationships with attendance over the course of one season as well as over the many seasons in the sample. Have these relationships changed over time? For example, are there some predictors that had a stronger relationship earlier in the sample? How do different predictors relate to each other and interact in their relationships with attendance?
+We are trying to determine the relationships between the variables and attendance? We’re looking at the relationships with attendance over the course of one season as well as over the many seasons in the sample. Have these relationships changed over time? For example, are there some predictors that had a stronger relationship earlier in the sample? How do different predictors relate to each other and interact in their relationships with attendance?
 
 
 # II. Exploratory Data Analysis
