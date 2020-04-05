@@ -234,3 +234,6 @@ Attendance and fill rate have both decreased over the years in the sample, with 
 Both measures decrease by month from September through November. It is harder to draw conclusions about August or December as there are only `r length(which(attendance.data$Month==8))` observations in August and `r length(which(attendance.data$Month==12))` observations in December out of the `r length(attendance.data[,1])` total observations in our sample dataset.
 
 We can observe a sort of heirarchy in conference attendance and fill rate, with the SEC having the highest fill rates of any conference. Independents have good attendance and fill rate largely due to Notre Dame, one of the most popular college football teams, being one of a small number of independent schools. Not surprisingly, schools in the lower FCS classification (or something similar like Division I-AA), had very low attendance and fill rates.
+
+
+_DJM:_ This looks good, and I'm curious to see what you conclude. A few points: You should really use more color in your graphics. They're ugly! Also, you should describe where the data came from. Finally, a potentially interesting article: https://www.si.com/college/2020/01/10/college-football-attendance-decline-ncaa
