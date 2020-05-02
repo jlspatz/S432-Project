@@ -71,19 +71,6 @@ We are trying to determine the relationships between the variables and attendanc
 | Month | Month of recorded game |
 | Day | Day of recorded game |
 
-### 1. Quantiles
-
-```{r quantile ranges}
-quan.att = quantile(attendance.data$Attendance, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
-quan.fill = quantile(attendance.data$Fill.Rate, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
-quan.cap = quantile(attendance.data$Stadium.Capacity, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
-quan.att
-quan.cap
-quan.fill
-```
-
-The median for attendance is `r quan.att[2]`, with 25% and 75% quantiles of `r quan.att[1]` and `r quan.att[3]`. For stadium capacity, we have a median of `r quan.cap[2]` and quantiles of `r quan.cap[1]` and `r quan.cap[3]`. Fill rate has a median of `r quan.fill[2]`, a 25% quantile of `r quan.fill[1]`, and a 75% quantile of `r quan.fill[3]`.
-
 ```{r bad-data-removal}
 attendance.data = attendance.data[-c(5436,5443,5450,5457, 4522, 4524, 4526, 4528, 4530, 4532),]
 ```
@@ -162,5 +149,44 @@ while(yr<2013){
         yr = yr+1
 }
 attendance.data$Conference[which(attendance.data$Team=="Georgia State")] = georgia_st$Conference
+```
+
+### 1. Quantiles
+
+```{r quantile ranges}
+quan.att = quantile(attendance.data$Attendance, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
+quan.fill = quantile(attendance.data$Fill.Rate, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
+quan.cap = quantile(attendance.data$Stadium.Capacity, c(0.25, 0.5, 0.75), type = 1, na.rm = TRUE)
+quan.att
+quan.cap
+quan.fill
+```
+
+The median for attendance is `r quan.att[2]`, with 25% and 75% quantiles of `r quan.att[1]` and `r quan.att[3]`. For stadium capacity, we have a median of `r quan.cap[2]` and quantiles of `r quan.cap[1]` and `r quan.cap[3]`. Fill rate has a median of `r quan.fill[2]`, a 25% quantile of `r quan.fill[1]`, and a 75% quantile of `r quan.fill[3]`.
+
+## Histograms
+```{r response-histograms, fig.height=10, fig.width=10}
+par(mfrow = c(3,3))
+hist(attendance.data$Attendance/1000, main = "Histogram of Attendance",
+     xlab = "Attendance (Thousands)")
+hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate",
+     xlab = "Fill Rate")
+hist(attendance.data$Current.Wins, main = "Histogram of Current Wins",
+     xlab = "Current Wins")
+hist(attendance.data$Current.Losses, main = "Histogram of Current Losses",
+     xlab = "Current Losses")
+hist(attendance.data$Stadium.Capacity/1000,
+     main = "Histogram of Stadium Capacity",
+     xlab = "Stadium Capacity (Thousands)")
+hist(attendance.data$Year, main = "Histogram of Year", xlab = "Year")
+hist(attendance.data$Month, main = "Histogram of Month", xlab = "Month")
+```
+
+## Continouous Predictors
+
+### 1. Plots
+
+```{r pairs-plot, fig.height=10, fig.width=10}
+pairs(Attendance~Fill.Rate+TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)
 ```
 
