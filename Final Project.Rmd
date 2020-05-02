@@ -44,6 +44,33 @@ We are trying to determine the relationships between the variables and attendanc
 # II. Exploratory Data Analysis
 ## A. Exploring the Variables
 
+| Variable | Description |
+|:------------------------------------------------|:-------------------------------------------------------------------------------------------------------|
+| Team | Name of college football team |
+| Time | Start time of game |
+| Opponent | Name of college team that given college is playing |
+| Rank | Age of contestant |
+| Site | Location of game |
+| TV | Television station game is broadcasted |
+| Result | Final result of game with win or loss  and score |
+| Attendance | Number of fans in attendance |
+| Current.Wins | Number of season wins going into given game |
+| Current.Losses | Number of season losses going into given game |
+| Stadium.Capacity | Maximum number of fans given teams stadium can hold |
+| Fill.Rate | Proportion of stadium capacity filled |
+| New.Coach | Does team have a first year coach? TRUE or FALSE |
+| Tailgating | Is the college rated a top 25 tailgating scene? TRUE or FALSE |
+| PRCP | Amount of precipitation during game |
+| SNOW | Amount of snowfall during game |
+| SNWD | Depth of snow during play |
+| TMAX | Maximum temperature during game |
+| TMIN | Minimum temperature during game |
+| Opponent_Rank | Number rank of opponent team if in top 25, NR if not |
+| Conference | Division team plays in |
+| Year | Year of recorded game |
+| Month | Month of recorded game |
+| Day | Day of recorded game |
+
 ### 1. Quantiles
 
 ```{r quantile ranges}
