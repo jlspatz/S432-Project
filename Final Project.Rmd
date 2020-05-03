@@ -330,7 +330,7 @@ att_np = npreg(Attendance~Current.Wins+Current.Losses+Stadium.Capacity+
                     factor(Conference)+Year+Month, data=select.set)
 ```
 
-```{r gam-1}
+```{r gam-att}
 library(mgcv)
 att.gam = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=select.set)
 att.gam2 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=select.set)
@@ -339,12 +339,33 @@ att.gam4 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tai
 att.gam5 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start, data=select.set)
 ```
 
-```{r gam-2}
+```{r rmse-att}
+mdl_rmse <- function(mdl){
+  rmse = sqrt(mean(residuals(mdl)^2))
+  return(rmse)
+}
+
+mdl_rmse(att.gam)
+mdl_rmse(att.gam2)
+mdl_rmse(att.gam3)
+mdl_rmse(att.gam4)
+mdl_rmse(att.gam5)
+```
+
+```{r gam-fill}
 fill.gam = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=select.set)
 fill.gam2 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=select.set)
 fill.gam3 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=select.set)
 fill.gam4 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=select.set)
 fill.gam5 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start, data=select.set)
+```
+
+```{r rmse-fill}
+mdl_rmse(fill.gam)
+mdl_rmse(fill.gam2)
+mdl_rmse(fill.gam3)
+mdl_rmse(fill.gam4)
+mdl_rmse(fill.gam5)
 ```
 
 ## B. Inference/Results
