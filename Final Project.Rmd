@@ -189,7 +189,7 @@ quan.fill
 
 The median for attendance is `r quan.att[2]`, with 25% and 75% quantiles of `r quan.att[1]` and `r quan.att[3]`. For stadium capacity, we have a median of `r quan.cap[2]` and quantiles of `r quan.cap[1]` and `r quan.cap[3]`. Fill rate has a median of `r quan.fill[2]`, a 25% quantile of `r quan.fill[1]`, and a 75% quantile of `r quan.fill[3]`.
 
-## Histograms
+### 2. Histograms
 ```{r response-histograms, fig.height=10, fig.width=10}
 par(mfrow = c(3,3))
 hist(attendance.data$Attendance/1000, main = "Histogram of Attendance",
@@ -216,7 +216,7 @@ fall during the main college football season. The games that were played in Apri
 dataset. We removed those games in order to have consistent analysis of the data. Also, one game was incorrectly marked as occurring in January instead
 of December, so we fixed that.
 
-## Continouous Predictors
+## B. Continouous Predictors
 
 ### 1. Plots
 
@@ -250,6 +250,8 @@ boxplot(Attendance/1000~Conference, data=attendance.data,
         names = c("AAC","ACC","B10","B12","BE","CUSA","FCS",
                   "Ind.","MAC","MWC","P12","SEC", "SB","WAC"))
 ```
+
+### 2. Fill Rate Plots
 
 ```{r fill-rate-boxplots, fig.width=10}
 boxplot(Fill.Rate~Tailgating,data=attendance.data, ylab = "Fill Rate",
@@ -285,3 +287,32 @@ Attendance and fill rate have both decreased over the years in the sample, with 
 Both measures decrease by month from September through November. It is harder to draw conclusions about August or December as there are only `r length(which(attendance.data$Month==8))` observations in August and `r length(which(attendance.data$Month==12))` observations in December out of the `r length(attendance.data[,1])` total observations in our sample dataset.
 
 We can observe a sort of heirarchy in conference attendance and fill rate, with the SEC having the highest fill rates of any conference. Independents have good attendance and fill rate largely due to Notre Dame, one of the most popular college football teams, being one of a small number of independent schools. Not surprisingly, schools in the lower FCS classification (or something similar like Division I-AA), had very low attendance and fill rates.
+
+# III. Results and Analysis
+
+## A. Modeling
+
+```{r np-model-1, cache=TRUE}
+library(np)
+n = nrow(attendance.data)
+select.rows <- sample(1:n, replace=FALSE, size=floor(n/2))
+select.set <- attendance.data[select.rows,]
+inference.set <- attendance.data[-select.rows,]
+att_np = npreg(Attendance~Current.Wins+Current.Losses+Stadium.Capacity+
+                    factor(Conference)+Year+Month, data=select.set)
+```
+
+```{r gam-1}
+library(mgcv)
+att_gam = gam(Attendance~Current.Wins+Current.Losses+Stadium.Capacity+New.Coach+Tailgating, data=attendance.data)
+```
+
+
+## B. Inference/Results
+
+```{r inference}
+
+```
+
+
+# IV. Final Discussions and Results
