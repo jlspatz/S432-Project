@@ -193,18 +193,18 @@ The median for attendance is `r quan.att[2]`, with 25% and 75% quantiles of `r q
 ```{r response-histograms, fig.height=10, fig.width=10}
 par(mfrow = c(3,3))
 hist(attendance.data$Attendance/1000, main = "Histogram of Attendance",
-     xlab = "Attendance (Thousands)")
+     xlab = "Attendance (Thousands)", col = "lightskyblue2")
 hist(attendance.data$Fill.Rate, main = "Histogram of Fill Rate",
-     xlab = "Fill Rate")
+     xlab = "Fill Rate", col = "lightskyblue2")
 hist(attendance.data$Current.Wins, main = "Histogram of Current Wins",
-     xlab = "Current Wins")
+     xlab = "Current Wins", col = "lightskyblue2")
 hist(attendance.data$Current.Losses, main = "Histogram of Current Losses",
-     xlab = "Current Losses")
+     xlab = "Current Losses", col = "lightskyblue2")
 hist(attendance.data$Stadium.Capacity/1000,
      main = "Histogram of Stadium Capacity",
-     xlab = "Stadium Capacity (Thousands)")
-hist(attendance.data$Year, main = "Histogram of Year", xlab = "Year")
-hist(attendance.data$Month, main = "Histogram of Month", xlab = "Month")
+     xlab = "Stadium Capacity (Thousands)", col = "lightskyblue2")
+hist(attendance.data$Year, main = "Histogram of Year", xlab = "Year", col = "lightskyblue2")
+hist(attendance.data$Month, main = "Histogram of Month", xlab = "Month", col = "lightskyblue2")
 ```
 
 In order to understand the data provided, the variables were first analyzed in histograms. Attendance is distributed fairly evenly with most of the game
@@ -221,7 +221,7 @@ of December, so we fixed that.
 ### 1. Plots
 
 ```{r pairs-plot, fig.height=10, fig.width=10}
-pairs(Attendance~Fill.Rate+TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)
+pairs(Attendance~Fill.Rate+TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data, col = c("lightskyblue4","lightskyblue3", "lightskyblue2"), labels = c("Attendance", "Fill Rate", "Temperature Max", "Temperature Minimum", "Snowfall Amount", "Precipitation Amount", "Snow Depth"))
 ```
 
 As we would expect, fill rate and attendance are very positively correlated as they are both measurements of attendance. It does not seem that temperature (either max or min) has much of a relationship with attendance or fill rate. If there is a relationship, it might be with an interaction with one or more other variables. There are not many observations of snowfall or snow depth of an inch or more, but there does appear to be a negative correlation between both measures and attendance. Negative correlations with fill rate are not as apparent from the plot, indicating that some of the correlation with attendance could be because stadiums where heavy snowfall occurred have lower than average capacities. Precipitation also looks like it has a slight negative correlation with attendance, with a correlation with fill rate less clear.
