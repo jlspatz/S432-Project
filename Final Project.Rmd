@@ -18,6 +18,7 @@ library(dplyr)
 library(ggthemes)
 library(gridExtra)
 library(ggplot2)
+library(GGally)
 opts_chunk$set(echo=FALSE,
                cache=TRUE, autodep=TRUE,
                message=FALSE, warning=FALSE)
