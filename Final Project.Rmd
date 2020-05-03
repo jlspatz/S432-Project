@@ -185,6 +185,7 @@ newtime = str_split(attendance.data$Time, ":")
 attendance.data$Hour = double(length=nrow(attendance.data))
 attendance.data$Start = double(length=nrow(attendance.data))
 attendance.data$Start2 = double(length=nrow(attendance.data))
+attendance.data$ConfCoded = double(length=nrow(attendance.data))
 
 for (i in 1:nrow(attendance.data)){
   if (attendance.data$Rank[i]=='NR')attendance.data$RankCoded[i] = 'Unranked'
@@ -198,12 +199,15 @@ for (i in 1:nrow(attendance.data)){
   else attendance.data$Start[i] = 'Night'
   if (attendance.data$Hour[i] %in% c(10,11,12,13,14,15,16,17))attendance.data$Start2[i] = 'Day'
   else attendance.data$Start2[i] = 'Night'
+  if ((attendance.data$Conference[i] %in% c('ACC','Big-10','Big-12','Big East','Pac-12','SEC'))||attendance.data$Team[i]=='Notre Dame')attendance.data$ConfCoded[i] = 'Power'
+  else attendance.data$ConfCoded[i] = 'Non-Power'
 }
 attendance.data$RankCoded = as.factor(attendance.data$RankCoded)
 attendance.data$OppRankCoded = as.factor(attendance.data$OppRankCoded)
 attendance.data$TVCoded = as.factor(attendance.data$TVCoded)
 attendance.data$Start = as.factor(attendance.data$Start)
 attendance.data$Start2 = as.factor(attendance.data$Start2)
+attendance.data$ConfCoded = as.factor(attendance.data$ConfCoded)
 ```
 
 ### 1. Quantiles
@@ -342,6 +346,7 @@ att.gam3 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tai
 att.gam4 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=select.set)
 att.gam5 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start, data=select.set)
 att.gam6 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start2, data=select.set)
+att.gam7 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+ConfCoded, data=select.set)
 ```
 
 ```{r rmse-att}
@@ -356,6 +361,7 @@ mdl_rmse(att.gam3)
 mdl_rmse(att.gam4)
 mdl_rmse(att.gam5)
 mdl_rmse(att.gam6)
+mdl_rmse(att.gam7)
 ```
 
 ```{r gam-fill}
@@ -365,6 +371,7 @@ fill.gam3 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tai
 fill.gam4 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=select.set)
 fill.gam5 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start, data=select.set)
 fill.gam6 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start2, data=select.set)
+fill.gam7 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start2+ConfCoded, data=select.set)
 ```
 
 ```{r rmse-fill}
@@ -374,11 +381,12 @@ mdl_rmse(fill.gam3)
 mdl_rmse(fill.gam4)
 mdl_rmse(fill.gam5)
 mdl_rmse(fill.gam6)
+mdl_rmse(fill.gam7)
 ```
 
 ## B. Inference/Results
 
-```{r inference}
+```{r estim-gam}
 preds.gam.all = predict(att.gam4, newdata=inference.set, se.fit=TRUE) # no interval here
 preds.gam = data.frame(
   obs.value = inference.set$Attendance, 
@@ -406,7 +414,43 @@ pgam
 ```
 
 ```{r, gam-pred-plot2, fig.width=10, fig.height=4} 
-pgam + coord_cartesian(xlim=c(0,4e4), ylim=c(0,7e4))
+pgam + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
 ```
+
+```{r, gam-prf,fig.height=12}
+plot(att.gam4, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
+```
+
+```{r estim-gam-2}
+preds.gam.all2 = predict(att.gam7, newdata=inference.set, se.fit=TRUE) # no interval here
+preds.gam2 = data.frame(
+  obs.value = inference.set$Attendance, 
+  fit = preds.gam.all$fit,
+  fit.se = preds.gam.all$se.fit)
+sigma.gam2 = sqrt(att.gam4$sig2) # annoyingly in a different place
+preds.gam2 = preds.gam2 %>% mutate(
+  lwr = fit - 2*sqrt(fit.se^2 + sigma.gam2^2), 
+  upr = fit + 2*sqrt(fit.se^2 + sigma.gam2^2), 
+  captured = (obs.value <= upr) & (obs.value >= lwr)
+  )
+mean(preds.gam2$captured)# percentage of actual observations inside the CI
+round(median(preds.gam.all2$se.fit),3) # median size of the pred SEs (log scale)
+```
+
+```{r, gam-preds-2, fig.width=10, fig.height=4} 
+pgam2 <- preds.gam2 %>%
+  ggplot(aes(x=obs.value,y=fit,color=captured)) + 
+  geom_errorbar(aes(ymin=lwr, ymax=upr), width=.1,color='grey') + 
+  geom_point(size=.1) + geom_abline(slope=1, intercept = 0, color='green') + 
+  scale_color_manual(values=c('red','blue')) +
+  xlab('Actual Attendance') + ylab('Predicted Attendance') +
+  ggtitle('Additive model 2')
+pgam2
+```
+
+```{r, gam-preds-2-zoom, fig.width=10, fig.height=4} 
+pgam2 + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
+```
+
 
 # IV. Final Discussions and Results
