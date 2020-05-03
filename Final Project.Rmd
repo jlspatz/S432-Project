@@ -96,8 +96,10 @@ what has an affect of team attendance numbers.
 ```{r bad-data-removal}
 attendance.data = attendance.data[-c(5436,5443,5450,5457, 4522, 4524, 4526, 4528, 4530, 4532),]
 ```
-
-In the data set, there were multiple teams that were placed into the wrong conferences at certain points in time. The data was fixed to correct this issue. 
+Our attendance dataset has variables that describe the setting for each particular game. It also has numerical variables for attendance numbers and some
+that tell us the if their was severe weather during the time of the game. We have a lot of cateogorical variables that place teams in certain groups.
+In the data set, there were multiple teams that were placed into the wrong conferences at certain points in time. The data was fixed to correct this
+issue. 
 
 ```{r incorrect-data}
 attendance.data[4424, 24] = 12
