@@ -226,3 +226,61 @@ pairs(Attendance~Fill.Rate+TMAX+TMIN+SNOW+PRCP+SNWD, data=attendance.data)
 As we would expect, fill rate and attendance are very positively correlated as they are both measurements of attendance. It does not seem that temperature (either max or min) has much of a relationship with attendance or fill rate. If there is a relationship, it might be with an interaction with one or more other variables. There are not many observations of snowfall or snow depth of an inch or more, but there does appear to be a negative correlation between both measures and attendance. Negative correlations with fill rate are not as apparent from the plot, indicating that some of the correlation with attendance could be because stadiums where heavy snowfall occurred have lower than average capacities. Precipitation also looks like it has a slight negative correlation with attendance, with a correlation with fill rate less clear.
 
 Maximum and minimum temperature obviously have a very strong positive correlation with each other. Both are also related to snowfall and snow depth as it can only snow at colder temperatures. There is also a somewhat positive relationship between temperature and precipitation.
+
+## C. Discrete Predictors
+
+### 1. Attendance Plots
+
+```{r attendance-boxplots, fig.width=10}
+boxplot(Attendance/1000~Tailgating,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Tailgating")
+boxplot(Attendance/1000~New.Coach,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs New Coach")
+boxplot(Attendance/1000~Current.Wins,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Wins")
+boxplot(Attendance/1000~Current.Losses,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Losses")
+boxplot(Attendance/1000~Year, data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Year")
+boxplot(Attendance/1000~Month,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Month")
+boxplot(Attendance/1000~Conference, data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Conference",
+        names = c("AAC","ACC","B10","B12","BE","CUSA","FCS",
+                  "Ind.","MAC","MWC","P12","SEC", "SB","WAC"))
+```
+
+```{r fill-rate-boxplots, fig.width=10}
+boxplot(Fill.Rate~Tailgating,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Tailgating")
+boxplot(Fill.Rate~New.Coach,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate (Thousands) vs New Coach")
+boxplot(Fill.Rate~Current.Wins,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Wins")
+boxplot(Fill.Rate~Current.Losses,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Losses")
+boxplot(Fill.Rate~Year, data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Year")
+boxplot(Fill.Rate~Month,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Month")
+boxplot(Fill.Rate~Conference, data=attendance.data,
+        main = "Fill Rate vs Conference",
+        names = c("AAC","ACC","B10","B12","BE","CUSA","FCS",
+                  "Ind.","MAC","MWC","P12","SEC", "SB","WAC"))
+```
+
+### 3. Analysis
+
+The boxplots for the discrete variables show similar trends for both attendance and fill rate. The differences that exist between plots for a variable against attendance and fill rate illustrate the nature of the relationships between these variables.
+
+Generally, the schools rated as being top 25 in tailgating have higher attendance than other schools. However, some of this is because these schools have larger stadiums. We can see from the fill rate boxplot that the top tailgating schools do have a higher fill rate but that the difference is not as large as the attendance chart made it look.
+
+The differences in attendance and fill rate for schools with a new coach are small but noticeable. Schools with a new coach, on average, have lower attendance than schools with a returning coach.
+
+As to be expected, attendance and fill rate inscrease with more wins and decrease with more losses. Weird outliers like attendance decreasing with 11 and 12 wins are due to instances of Boise State playing home games with 11 and 12 wins. Boise State has a fairly small stadium capacity.
+
+Attendance and fill rate have both decreased over the years in the sample, with both on a mostly steady decline since 2005-2007.
+
+Both measures decrease by month from September through November. It is harder to draw conclusions about August or December as there are only `r length(which(attendance.data$Month==8))` observations in August and `r length(which(attendance.data$Month==12))` observations in December out of the `r length(attendance.data[,1])` total observations in our sample dataset.
+
+We can observe a sort of heirarchy in conference attendance and fill rate, with the SEC having the highest fill rates of any conference. Independents have good attendance and fill rate largely due to Notre Dame, one of the most popular college football teams, being one of a small number of independent schools. Not surprisingly, schools in the lower FCS classification (or something similar like Division I-AA), had very low attendance and fill rates.
