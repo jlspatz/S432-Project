@@ -310,30 +310,32 @@ We can observe a sort of heirarchy in conference attendance and fill rate, with 
 # III. Results and Analysis
 
 ## A. Modeling
-
-```{r np-model-1, cache=TRUE}
-library(np)
+```{r data-splitting}
 n = nrow(attendance.data)
 select.rows <- sample(1:n, replace=FALSE, size=floor(n/2))
 select.set <- attendance.data[select.rows,]
 inference.set <- attendance.data[-select.rows,]
+```
+
+```{r np-model-1, cache=TRUE}
+library(np)
 att_np = npreg(Attendance~Current.Wins+Current.Losses+Stadium.Capacity+
                     factor(Conference)+Year+Month, data=select.set)
 ```
 
 ```{r gam-1}
 library(mgcv)
-att.gam = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=attendance.data)
-att.gam2 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=attendance.data)
-att.gam3 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=attendance.data)
-att.gam4 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=attendance.data)
+att.gam = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=select.set)
+att.gam2 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=select.set)
+att.gam3 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=select.set)
+att.gam4 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=select.set)
 ```
 
 ```{r gam-2}
-fill.gam = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=attendance.data)
-fill.gam2 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=attendance.data)
-fill.gam3 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=attendance.data)
-fill.gam4 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=attendance.data)
+fill.gam = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=select.set)
+fill.gam2 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=select.set)
+fill.gam3 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=select.set)
+fill.gam4 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=select.set)
 ```
 
 ## B. Inference/Results
