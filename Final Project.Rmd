@@ -178,19 +178,20 @@ attendance.data$Conference[which(attendance.data$Team=="Georgia State")] = georg
 
 ```{r factor-recode}
 attendance.data$RankCoded = double(length=nrow(attendance.data))
+attendance.data$OppRankCoded = double(length=nrow(attendance.data))
+attendance.data$TVCoded = double(length=nrow(attendance.data))
 
 for (i in 1:nrow(attendance.data)){
   if (attendance.data$Rank[i]=='NR')attendance.data$RankCoded[i] = 'Unranked'
   else attendance.data$RankCoded[i] = 'Ranked'
-}
-attendance.data$RankCoded = as.factor(attendance.data$RankCoded)
-
-attendance.data$OppRankCoded = double(length=nrow(attendance.data))
-for (i in 1:nrow(attendance.data)){
   if (attendance.data$Opponent_Rank[i]=='NR')attendance.data$OppRankCoded[i] = 'Unranked'
   else attendance.data$OppRankCoded[i] = 'Ranked'
+  if (attendance.data$TV[i]=='Not on TV')attendance.data$TVCoded[i] = 'Not on TV'
+  else attendance.data$TVCoded[i] = 'On TV'
 }
+attendance.data$RankCoded = as.factor(attendance.data$RankCoded)
 attendance.data$OppRankCoded = as.factor(attendance.data$OppRankCoded)
+attendance.data$TVCoded = as.factor(attendance.data$TVCoded)
 ```
 
 
@@ -328,6 +329,12 @@ att.gam3 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tai
 att.gam4 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=attendance.data)
 ```
 
+```{r gam-2}
+fill.gam = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=attendance.data)
+fill.gam2 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=attendance.data)
+fill.gam3 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=attendance.data)
+fill.gam4 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=attendance.data)
+```
 
 ## B. Inference/Results
 
