@@ -306,6 +306,7 @@ att_np = npreg(Attendance~Current.Wins+Current.Losses+Stadium.Capacity+
 library(mgcv)
 att.gam = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=attendance.data)
 att.gam2 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=attendance.data)
+att.gam3 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=attendance.data)
 ```
 
 
