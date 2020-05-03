@@ -45,7 +45,6 @@ have observed in our own college experiences.
 
 ```{r load-data, include=FALSE}
 attendance.data = read.csv("CFBeattendance.csv")
-newtime = str_split(attendance.data$Time, ":")
 ```
 
 The data analyzed contains information primarily from NCAA FBS (Football Bowl Subdivision), and its Division I-A predecessor, College Football games
@@ -180,6 +179,9 @@ attendance.data$Conference[which(attendance.data$Team=="Georgia State")] = georg
 attendance.data$RankCoded = double(length=nrow(attendance.data))
 attendance.data$OppRankCoded = double(length=nrow(attendance.data))
 attendance.data$TVCoded = double(length=nrow(attendance.data))
+newtime = str_split(attendance.data$Time, ":")
+attendance.data$Hour = double(length=nrow(attendance.data))
+attendance.data$Start = double(length=nrow(attendance.data))
 
 for (i in 1:nrow(attendance.data)){
   if (attendance.data$Rank[i]=='NR')attendance.data$RankCoded[i] = 'Unranked'
@@ -188,12 +190,15 @@ for (i in 1:nrow(attendance.data)){
   else attendance.data$OppRankCoded[i] = 'Ranked'
   if (attendance.data$TV[i]=='Not on TV')attendance.data$TVCoded[i] = 'Not on TV'
   else attendance.data$TVCoded[i] = 'On TV'
+  attendance.data$Hour[i] = as.numeric(newtime[[i]][1])
+  if (attendance.data$Hour[i] %in% c(10,11,12,13,14,15,16))attendance.data$Start[i] = 'Day'
+  else attendance.data$Start[i] = 'Night'
 }
 attendance.data$RankCoded = as.factor(attendance.data$RankCoded)
 attendance.data$OppRankCoded = as.factor(attendance.data$OppRankCoded)
 attendance.data$TVCoded = as.factor(attendance.data$TVCoded)
+attendance.data$Start = as.factor(attendance.data$Start)
 ```
-
 
 ### 1. Quantiles
 
@@ -329,6 +334,7 @@ att.gam = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.
 att.gam2 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=select.set)
 att.gam3 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=select.set)
 att.gam4 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=select.set)
+att.gam5 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start, data=select.set)
 ```
 
 ```{r gam-2}
@@ -336,6 +342,7 @@ fill.gam = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.
 fill.gam2 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=select.set)
 fill.gam3 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=select.set)
 fill.gam4 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=select.set)
+fill.gam5 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded+Start, data=select.set)
 ```
 
 ## B. Inference/Results
