@@ -176,6 +176,24 @@ while(yr<2013){
 attendance.data$Conference[which(attendance.data$Team=="Georgia State")] = georgia_st$Conference
 ```
 
+```{r factor-recode}
+attendance.data$RankCoded = double(length=nrow(attendance.data))
+
+for (i in 1:nrow(attendance.data)){
+  if (attendance.data$Rank[i]=='NR')attendance.data$RankCoded[i] = 'Unranked'
+  else attendance.data$RankCoded[i] = 'Ranked'
+}
+attendance.data$RankCoded = as.factor(attendance.data$RankCoded)
+
+attendance.data$OppRankCoded = double(length=nrow(attendance.data))
+for (i in 1:nrow(attendance.data)){
+  if (attendance.data$Opponent_Rank[i]=='NR')attendance.data$OppRankCoded[i] = 'Unranked'
+  else attendance.data$OppRankCoded[i] = 'Ranked'
+}
+attendance.data$OppRankCoded = as.factor(attendance.data$OppRankCoded)
+```
+
+
 ### 1. Quantiles
 
 ```{r quantile ranges}
@@ -307,6 +325,7 @@ library(mgcv)
 att.gam = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=attendance.data)
 att.gam2 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating, data=attendance.data)
 att.gam3 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX), data=attendance.data)
+att.gam4 = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tailgating+s(TMIN,TMAX)+RankCoded+OppRankCoded, data=attendance.data)
 ```
 
 
