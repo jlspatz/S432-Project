@@ -379,8 +379,34 @@ mdl_rmse(fill.gam6)
 ## B. Inference/Results
 
 ```{r inference}
-
+preds.gam.all = predict(att.gam4, newdata=inference.set, se.fit=TRUE) # no interval here
+preds.gam = data.frame(
+  obs.value = inference.set$Attendance, 
+  fit = preds.gam.all$fit,
+  fit.se = preds.gam.all$se.fit)
+sigma.gam = sqrt(att.gam4$sig2) # annoyingly in a different place
+preds.gam = preds.gam %>% mutate(
+  lwr = fit - 2*sqrt(fit.se^2 + sigma.gam^2), 
+  upr = fit + 2*sqrt(fit.se^2 + sigma.gam^2), 
+  captured = (obs.value <= upr) & (obs.value >= lwr)
+  )
+mean(preds.gam$captured)# percentage of actual observations inside the CI
+round(median(preds.gam.all$se.fit),3) # median size of the pred SEs (log scale)
 ```
 
+```{r, gam-preds, fig.width=10, fig.height=4} 
+pgam <- preds.gam %>%
+  ggplot(aes(x=obs.value,y=fit,color=captured)) + 
+  geom_errorbar(aes(ymin=lwr, ymax=upr), width=.1,color='grey') + 
+  geom_point(size=.1) + geom_abline(slope=1, intercept = 0, color='green') + 
+  scale_color_manual(values=c('red','blue')) +
+  xlab('Actual Attendance') + ylab('Predicted Attendance') +
+  ggtitle('Additive model')
+pgam
+```
+
+```{r, gam-pred-plot2, fig.width=10, fig.height=4} 
+pgam + coord_cartesian(xlim=c(0,4e4), ylim=c(0,7e4))
+```
 
 # IV. Final Discussions and Results
