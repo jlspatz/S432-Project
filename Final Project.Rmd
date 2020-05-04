@@ -210,6 +210,8 @@ attendance.data$Start2 = as.factor(attendance.data$Start2)
 attendance.data$ConfCoded = as.factor(attendance.data$ConfCoded)
 ```
 
+New binary category variables were created in order to analyze the data best. There are two variables that determine whether the home or away teams were ranked in the top 25 the time of the game, titled RankCoded and OppRankCoded. Another variable combined whether the game was televised or not. Then, start times of the games were condensed into whether they began during the day or the night, as opposed to individual start times in hours. Finally, a variable was created to determine if the teams were in a power conference or not. 
+
 ### 1. Quantiles
 
 ```{r quantile ranges}
