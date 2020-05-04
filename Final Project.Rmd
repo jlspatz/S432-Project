@@ -351,6 +351,9 @@ We can observe a sort of heirarchy in conference attendance and fill rate, with 
 # III. Results and Analysis
 
 ## A. Modeling
+
+We have split our data into two groups. Half of the observations are part of our selection set, which we will use to fit models. The other half will make up our inference set, which we will use to run diagnostics on our chosen models and determine if the models are flawed.
+
 ```{r data-splitting}
 n = nrow(attendance.data)
 select.rows <- sample(1:n, replace=FALSE, size=floor(n/2))
@@ -384,7 +387,10 @@ att.rmses[5] = mdl_rmse(att.gam5)
 att.rmses[6] = mdl_rmse(att.gam6)
 att.rmses[7] = mdl_rmse(att.gam7)
 best.att = which.min(att.rmses)
+best.att.rmse = round(min(att.rmses),3)
 ```
+
+After examining many models, we have determined that our preferred model for attendance is `att.gam7`, an additive model which includes current wins, current losses, stadium capacity, minimum temperature, maximum temperature, and factors for tailgating, rank, opponent rank, and school tier as predictor variables. It has the lowest root mean squared error of our fitted models, `r best.att.rmse`
 
 ```{r gam-fill}
 fill.gam = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=select.set)
@@ -406,7 +412,10 @@ fill.rmses[5] = mdl_rmse(fill.gam5)
 fill.rmses[6] = mdl_rmse(fill.gam6)
 fill.rmses[7] = mdl_rmse(fill.gam7)
 best.fill = which.min(fill.rmses)
+best.fill.rmse = min(fill.rmses)
 ```
+
+Similarly, our preferred fill rate model, `fill.gam7`, is an additive model which includes the same predictors as our preferred attendance model, plus a factor for whether the game starts in the day or at night. It has the lowest root mean squared error of our fitted fill rate models, `r best.fill.rmse`
 
 ## B. Inference/Results
 
@@ -423,8 +432,8 @@ preds.gam = preds.gam %>% mutate(
   upr = fit + 2*sqrt(fit.se^2 + sigma.gam^2), 
   captured = (obs.value <= upr) & (obs.value >= lwr)
   )
-mean(preds.gam$captured)# percentage of actual observations inside the CI
-round(median(preds.gam.all$se.fit),3) # median size of the pred SEs (log scale)
+mean.att.captured = mean(preds.gam$captured)# percentage of actual observations inside the CI
+median.att.ses = round(median(preds.gam.all$se.fit),3) # median size of the pred SEs (log scale)
 ```
 
 ```{r gam-preds, fig.width=10, fig.height=5} 
@@ -438,9 +447,13 @@ pgam <- preds.gam %>%
 pgam
 ```
 
+In our residual plot of predicted values against observed, we see fairly constant error variance throughout. At smaller observed values, we see that our model is more likely to overpredict attendance rather than underpredict.
+
 ```{r gam-preds-zoom, fig.width=10, fig.height=5} 
 pgam + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
 ```
+
+Zooming in on this region allows us to examine this closer. It does not seem to be too bad of a problem. We are still fairly confident in our attendance model.
 
 ### 2. Fill Rate Residuals
 
@@ -456,8 +469,8 @@ preds.gam2 = preds.gam2 %>% mutate(
   upr = fit + 2*sqrt(fit.se^2 + sigma.gam2^2), 
   captured = (obs.value <= upr) & (obs.value >= lwr)
   )
-mean(preds.gam2$captured)# percentage of actual observations inside the CI
-round(median(preds.gam.all2$se.fit),3) # median size of the pred SEs (log scale)
+mean.fill.capture = mean(preds.gam2$captured)# percentage of actual observations inside the CI
+median.fill.ses = round(median(preds.gam.all2$se.fit),3) # median size of the pred SEs (log scale)
 ```
 
 ```{r gam-preds-fill, fig.width=10, fig.height=5} 
@@ -471,7 +484,11 @@ pgam2 <- preds.gam2 %>%
 pgam2
 ```
 
+The residual plot for our fill rate model shows worse skew than our attendance model. It overpredicts low fill rates and underpredicts high fill rates. It is possible that there is something important that our model is failing to capture.
+
 ### 3. Attendance Coefficients and Partial Response Functions
+
+We have a table of coefficients for our categorical variables while we need plots of the partial response functions to see the relation between our smoothed variables and the response.
 
 ```{r final-models}
 final.att.mdl = att.gam7
@@ -488,6 +505,8 @@ plot(final.att.mdl, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
 
 ### 4. Fill Rate Coefficients and Partial Response Functions
 
+We also produce the coefficient table and partial response function plots for our fill rate model.
+
 ```{r fill-kable}
 knitr::kable(fill.coef)
 ```
@@ -503,6 +522,8 @@ In conclusion, a final model was created that used the available data to predict
 Being a top 25 tailgating location, being ranked, the opponent being ranked, and being in a power conference all resulted in greater attendance and higher fill rates. Games starting at night also resulted in higher fill rates. While greater stadium capacity obviously resulted in greater observed attendances, it had a negatively observed relationship with fill rate. 
 
 Generally speaking, the better home team records (more wins than losses) result in greater attendance and higher fill rates. Interestingly, our models imply that the attendance penalty for losing is more severe than the reward for winning. The zero ridge of no increase or decrease in attendance starts not at a 0-0 record but a 0-1. However, it trends faster towards wins than losses; for example a 6-4 record produces no net change in attendance. Similarly, a .500 record (same number of wins as losses) results in larger negative swings in attendance with more games played. This effect may be somewhat due to the skewed distribution of fill rates. As we observed in our histogram of fill rates, they are more heavily concentrated at fill rates near 100%, with very few below 50%. It stands to reason that any team already drawing close to 100% attendance can only increase attendance so much by winning more while even a team drawing at 50% has plenty of room to fall.
+
+There is not as strong of a relationship between the temperature and attendance. In smoothing them together we saw that the zero ridge for attendance is found roughly when the maximum temperature is about 15-20 degrees greater than the minimum temperature. Larger differences correlated with greater attendance and smaller differences with worse attendance, but this is not as pronounced as the smoothing of wins and losses.
 
 It was interesting to observe, that in general testing of models, that when whether a game was televised was included as a variable, while not significant, there was a slight positive correlation. As the dataset includes many years when there were not as many televised games each week, this might be a reflection that larger, better, and more popular programs are overrepresented in the sample of televised games. There is a common claim that the availability of games being televised affects attendance negatively, as people can watch from their preferred locations of their house or a local sports bar for example. However, this was not seen throughout the modeling processes. It is possible, that the increase of televised games and streaming services might hurt attendance throughout the country, but that would need more reasearch and analysis in the future. 
 
