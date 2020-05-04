@@ -268,12 +268,22 @@ Maximum and minimum temperature obviously have a very strong positive correlatio
 
 ### 1. Attendance Plots
 
-```{r attendance-boxplots, fig.width=10}
-par(mfrow = c(2,4))
+```{r attendance-boxplots, fig.height=9, fig.width=10}
+par(mfrow = c(4,3))
 boxplot(Attendance/1000~Tailgating,data=attendance.data,
         ylab = "Attendance (Thousands)", main = "Attendance vs Tailgating")
 boxplot(Attendance/1000~New.Coach,data=attendance.data,
         ylab = "Attendance (Thousands)", main = "Attendance vs New Coach")
+boxplot(Attendance/1000~RankCoded,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Ranked")
+boxplot(Attendance/1000~OppRankCoded,data=attendance.data,
+        ylab = "Attendance (Thousands)",
+        main = "Attendance vs Opponent Ranked")
+boxplot(Attendance/1000~TVCoded,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs Televised")
+boxplot(Attendance/1000~Start2,data=attendance.data,
+        ylab = "Attendance (Thousands)",
+        main = "Attendance vs Game Start Time")
 boxplot(Attendance/1000~Current.Wins,data=attendance.data,
         ylab = "Attendance (Thousands)", main = "Attendance vs Wins")
 boxplot(Attendance/1000~Current.Losses,data=attendance.data,
@@ -286,15 +296,26 @@ boxplot(Attendance/1000~Conference, data=attendance.data,
         ylab = "Attendance (Thousands)", main = "Attendance vs Conference",
         names = c("AAC","ACC","B10","B12","BE","CUSA","FCS",
                   "Ind.","MAC","MWC","P12","SEC", "SB","WAC"))
+boxplot(Attendance/1000~ConfCoded,data=attendance.data,
+        ylab = "Attendance (Thousands)", main = "Attendance vs School Tier")
 ```
 
 ### 2. Fill Rate Plots
 
-```{r fill-rate-boxplots, fig.width=10}
+```{r fill-rate-boxplots, fig.height=9, fig.width=10}
+par(mfrow = c(4,3))
 boxplot(Fill.Rate~Tailgating,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Tailgating")
 boxplot(Fill.Rate~New.Coach,data=attendance.data, ylab = "Fill Rate",
-        main = "Fill Rate (Thousands) vs New Coach")
+        main = "Fill Rate vs New Coach")
+boxplot(Fill.Rate~RankCoded,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Ranked")
+boxplot(Fill.Rate~OppRankCoded,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Opponent Ranked")
+boxplot(Fill.Rate~TVCoded,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Televised")
+boxplot(Fill.Rate~Start2,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs Game Start Time")
 boxplot(Fill.Rate~Current.Wins,data=attendance.data, ylab = "Fill Rate",
         main = "Fill Rate vs Wins")
 boxplot(Fill.Rate~Current.Losses,data=attendance.data, ylab = "Fill Rate",
@@ -307,6 +328,8 @@ boxplot(Fill.Rate~Conference, data=attendance.data,
         main = "Fill Rate vs Conference",
         names = c("AAC","ACC","B10","B12","BE","CUSA","FCS",
                   "Ind.","MAC","MWC","P12","SEC", "SB","WAC"))
+boxplot(Fill.Rate~ConfCoded,data=attendance.data, ylab = "Fill Rate",
+        main = "Fill Rate vs School Tier")
 ```
 
 ### 3. Analysis
@@ -410,7 +433,7 @@ pgam <- preds.gam %>%
   geom_point(size=.1) + geom_abline(slope=1, intercept = 0, color='green') + 
   scale_color_manual(values=c('red','blue')) +
   xlab('Actual Attendance') + ylab('Predicted Attendance') +
-  ggtitle('Additive model')
+  ggtitle('Attendance Additive Model')
 pgam
 ```
 
