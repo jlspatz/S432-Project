@@ -351,13 +351,15 @@ mdl_rmse <- function(mdl){
   return(rmse)
 }
 
-mdl_rmse(att.gam)
-mdl_rmse(att.gam2)
-mdl_rmse(att.gam3)
-mdl_rmse(att.gam4)
-mdl_rmse(att.gam5)
-mdl_rmse(att.gam6)
-mdl_rmse(att.gam7)
+att.rmses = double(7)
+att.rmses[1] = mdl_rmse(att.gam)
+att.rmses[2] = mdl_rmse(att.gam2)
+att.rmses[3] = mdl_rmse(att.gam3)
+att.rmses[4] = mdl_rmse(att.gam4)
+att.rmses[5] = mdl_rmse(att.gam5)
+att.rmses[6] = mdl_rmse(att.gam6)
+att.rmses[7] = mdl_rmse(att.gam7)
+best.att = which.min(att.rmses)
 ```
 
 ```{r gam-fill}
@@ -371,24 +373,26 @@ fill.gam7 = gam(Fill.Rate~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+Tai
 ```
 
 ```{r rmse-fill}
-mdl_rmse(fill.gam)
-mdl_rmse(fill.gam2)
-mdl_rmse(fill.gam3)
-mdl_rmse(fill.gam4)
-mdl_rmse(fill.gam5)
-mdl_rmse(fill.gam6)
-mdl_rmse(fill.gam7)
+fill.rmses = double(7)
+fill.rmses[1] = mdl_rmse(fill.gam)
+fill.rmses[2] = mdl_rmse(fill.gam2)
+fill.rmses[3] = mdl_rmse(fill.gam3)
+fill.rmses[4] = mdl_rmse(fill.gam4)
+fill.rmses[5] = mdl_rmse(fill.gam5)
+fill.rmses[6] = mdl_rmse(fill.gam6)
+fill.rmses[7] = mdl_rmse(fill.gam7)
+best.fill = which.min(fill.rmses)
 ```
 
 ## B. Inference/Results
 
 ```{r estim-gam}
-preds.gam.all = predict(att.gam4, newdata=inference.set, se.fit=TRUE) # no interval here
+preds.gam.all = predict(att.gam7, newdata=inference.set, se.fit=TRUE) # no interval here
 preds.gam = data.frame(
   obs.value = inference.set$Attendance, 
   fit = preds.gam.all$fit,
   fit.se = preds.gam.all$se.fit)
-sigma.gam = sqrt(att.gam4$sig2) # annoyingly in a different place
+sigma.gam = sqrt(att.gam7$sig2) # annoyingly in a different place
 preds.gam = preds.gam %>% mutate(
   lwr = fit - 2*sqrt(fit.se^2 + sigma.gam^2), 
   upr = fit + 2*sqrt(fit.se^2 + sigma.gam^2), 
@@ -414,12 +418,12 @@ pgam + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
 ```
 
 ```{r estim-gam-2}
-preds.gam.all2 = predict(att.gam7, newdata=inference.set, se.fit=TRUE) # no interval here
+preds.gam.all2 = predict(fill.gam7, newdata=inference.set, se.fit=TRUE) # no interval here
 preds.gam2 = data.frame(
-  obs.value = inference.set$Attendance, 
-  fit = preds.gam.all$fit,
-  fit.se = preds.gam.all$se.fit)
-sigma.gam2 = sqrt(att.gam4$sig2) # annoyingly in a different place
+  obs.value = inference.set$Fill.Rate, 
+  fit = preds.gam.all2$fit,
+  fit.se = preds.gam.all2$se.fit)
+sigma.gam2 = sqrt(fill.gam7$sig2) # annoyingly in a different place
 preds.gam2 = preds.gam2 %>% mutate(
   lwr = fit - 2*sqrt(fit.se^2 + sigma.gam2^2), 
   upr = fit + 2*sqrt(fit.se^2 + sigma.gam2^2), 
@@ -433,15 +437,11 @@ round(median(preds.gam.all2$se.fit),3) # median size of the pred SEs (log scale)
 pgam2 <- preds.gam2 %>%
   ggplot(aes(x=obs.value,y=fit,color=captured)) + 
   geom_errorbar(aes(ymin=lwr, ymax=upr), width=.1,color='grey') + 
-  geom_point(size=.1) + geom_abline(slope=1, intercept = 0, color='green') + 
+  geom_point(size=.1) + geom_abline(slope=1, intercept=0, color='green') + 
   scale_color_manual(values=c('red','blue')) +
-  xlab('Actual Attendance') + ylab('Predicted Attendance') +
-  ggtitle('Additive model 2')
+  xlab('Actual Fill Rate') + ylab('Predicted Fill Rate') +
+  ggtitle('Fill Rate Additive Model')
 pgam2
-```
-
-```{r, gam-preds-2-zoom, fig.width=10, fig.height=4} 
-pgam2 + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
 ```
 
 ```{r final-models}
