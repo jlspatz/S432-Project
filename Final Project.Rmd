@@ -474,6 +474,8 @@ final.fill.mdl = fill.gam7
 
 att.coef = coefficients(final.att.mdl)[c(1:5)]
 fill.coef = coefficients(final.fill.mdl)[c(1:6)]
+coef(att.coef)
+coef(fill.coef)
 ```
 
 ```{r att-prf,fig.height=10}
