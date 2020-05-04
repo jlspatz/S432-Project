@@ -413,12 +413,8 @@ pgam <- preds.gam %>%
 pgam
 ```
 
-```{r, gam-pred-plot2, fig.width=10, fig.height=4} 
+```{r, gam-preds-zoom, fig.width=10, fig.height=4} 
 pgam + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
-```
-
-```{r, gam-prf,fig.height=12}
-plot(att.gam4, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
 ```
 
 ```{r estim-gam-2}
@@ -452,5 +448,20 @@ pgam2
 pgam2 + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
 ```
 
+```{r final-models}
+final.att.mdl = att.gam7
+final.fill.mdl = fill.gam7
+
+att.coef = coefficients(final.att.mdl)[c(1:5)]
+fill.coef = coefficients(final.fill.mdl)[c(1:6)]
+```
+
+```{r, att-prf,fig.height=12}
+plot(final.att.mdl, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
+```
+
+```{r, fill-prf,fig.height=12}
+plot(final.fill.mdl, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
+```
 
 # IV. Final Discussions and Results
