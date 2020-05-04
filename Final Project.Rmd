@@ -332,13 +332,6 @@ select.set <- attendance.data[select.rows,]
 inference.set <- attendance.data[-select.rows,]
 ```
 
-```{r np-model-1, cache=TRUE}
-library(np)
-att_np = npreg(Attendance~Current.Wins+Current.Losses+Stadium.Capacity+
-                    factor(ConfCoded)+factor(Tailgating)+factor(RankCoded)+
-                    factor(OppRankCoded)+TMIN+TMAX, data=select.set)
-```
-
 ```{r gam-att}
 library(mgcv)
 att.gam = gam(Attendance~s(Current.Wins,Current.Losses)+s(Stadium.Capacity)+New.Coach+Tailgating, data=select.set)
