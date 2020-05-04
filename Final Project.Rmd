@@ -210,6 +210,8 @@ attendance.data$Start2 = as.factor(attendance.data$Start2)
 attendance.data$ConfCoded = as.factor(attendance.data$ConfCoded)
 ```
 
+New binary category variables were created in order to analyze the data best. There are two variables that determine whether the home or away teams were ranked in the top 25 the time of the game, titled RankCoded and OppRankCoded. Another variable combined whether the game was televised or not. Then, start times of the games were condensed into whether they began during the day or the night, as opposed to individual start times in hours. Finally, a variable was created to determine if the teams were in a power conference or not. 
+
 ### 1. Quantiles
 
 ```{r quantile ranges}
@@ -459,3 +461,9 @@ plot(final.fill.mdl, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
 ```
 
 # IV. Final Discussions and Results
+
+In conclusion, a final model was created that used the available data to predict attendance and stadium fill percentages effectively. This model smoothed the current wins and loses of the home team together, to create a variable that represented the team's overall record at the time of the game. The stadium capacity was smoothed, as well as the maximum and minimum temperatures smoothed together. The smoothing of temperature data together improved the model's accuracy compared to models that smoothed the two separately. The variables of whether the school was a top 25 tailgating location, the ranks of both of the teams playing, and if the home team was in a power conference, were added. Whether the school is a top 25 tailgating location proved to be significant, as well as the capacity of the stadium. 
+
+It was interesting to observe, that in general testing of models, that when whether a game was televised was included as a variable, while not significant, there was a slight positive correlation. There is a common claim that the availability of games being televised affects attendance negatively, as people can watch from their preferred locations of their house or a local sports bar for example. However, this was not seen throughout the modeling processes. It is possible, that the increase of televised games and streaming services might hurt attendance throughout the country, but that would need more reasearch and analysis in the future. 
+
+While this model did not aid in the question as to why attendance has been decreasing for over 10 years, it did significantly help with the prediction of attendance rates per specific games. There are speculations as to the large decrease in attendance, which include the increase of price of tickets as well as the increase of cost of education and life for students at universities. These variables would be beneficial if they were recorded and included in future models, to possibly see the relationship over time with university life and attendance. 
