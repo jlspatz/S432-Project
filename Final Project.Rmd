@@ -410,6 +410,7 @@ best.fill = which.min(fill.rmses)
 
 ## B. Inference/Results
 
+### 1. Attendance Residuals
 ```{r estim-gam}
 preds.gam.all = predict(att.gam7, newdata=inference.set, se.fit=TRUE) # no interval here
 preds.gam = data.frame(
@@ -441,6 +442,8 @@ pgam
 pgam + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
 ```
 
+### 2. Fill Rate Residuals
+
 ```{r estim-gam-fill}
 preds.gam.all2 = predict(fill.gam7, newdata=inference.set, se.fit=TRUE) # no interval here
 preds.gam2 = data.frame(
@@ -468,18 +471,25 @@ pgam2 <- preds.gam2 %>%
 pgam2
 ```
 
+### 3. Attendance Coefficients and Partial Response Functions
+
 ```{r final-models}
 final.att.mdl = att.gam7
 final.fill.mdl = fill.gam7
 
 att.coef = coefficients(final.att.mdl)[c(1:5)]
 fill.coef = coefficients(final.fill.mdl)[c(1:6)]
-coef(att.coef)
-coef(fill.coef)
+knitr::kable(att.coef)
 ```
 
 ```{r att-prf,fig.height=10}
 plot(final.att.mdl, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
+```
+
+### 4. Fill Rate Coefficients and Partial Response Functions
+
+```{r fill-kable}
+knitr::kable(fill.coef)
 ```
 
 ```{r fill-prf,fig.height=10}
