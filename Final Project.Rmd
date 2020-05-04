@@ -340,13 +340,19 @@ Generally, the schools rated as being top 25 in tailgating have higher attendanc
 
 The differences in attendance and fill rate for schools with a new coach are small but noticeable. Schools with a new coach, on average, have lower attendance than schools with a returning coach.
 
+Observations where either the home team or the opponent is ranked have greater attendance and higher fill rate than unranked observations.
+
+Televised games tend to have greater attendance and fill rate than non-televised games.
+
+Attendance tends to be higher for games that start during the day rather than games that start at night. Fill rate looks to be essentially the same for both groups of observations. It is possible that schools who tend to play home games at night more frequently have smaller than average stadiums.
+
 As to be expected, attendance and fill rate inscrease with more wins and decrease with more losses. Weird outliers like attendance decreasing with 11 and 12 wins are due to instances of Boise State playing home games with 11 and 12 wins. Boise State has a fairly small stadium capacity.
 
 Attendance and fill rate have both decreased over the years in the sample, with both on a mostly steady decline since 2005-2007.
 
 Both measures decrease by month from September through November. It is harder to draw conclusions about August or December as there are only `r length(which(attendance.data$Month==8))` observations in August and `r length(which(attendance.data$Month==12))` observations in December out of the `r length(attendance.data[,1])` total observations in our sample dataset.
 
-We can observe a sort of heirarchy in conference attendance and fill rate, with the SEC having the highest fill rates of any conference. Independents have good attendance and fill rate largely due to Notre Dame, one of the most popular college football teams, being one of a small number of independent schools. Not surprisingly, schools in the lower FCS classification (or something similar like Division I-AA), had very low attendance and fill rates.
+We can observe a sort of heirarchy in conference attendance and fill rate, with the SEC having the highest fill rates of any conference. Independents have good attendance and fill rate largely due to Notre Dame, one of the most popular college football teams, being one of a small number of independent schools. Not surprisingly, schools in the lower FCS classification (or something similar like Division I-AA), had very low attendance and fill rates. When we separate the schools into the power conferences (plus Notre Dame) and non-power conferences, we see a stark difference in attendance and a noticeable difference in fill rate too.
 
 # III. Results and Analysis
 
