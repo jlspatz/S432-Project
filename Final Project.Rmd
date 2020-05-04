@@ -426,7 +426,7 @@ mean(preds.gam$captured)# percentage of actual observations inside the CI
 round(median(preds.gam.all$se.fit),3) # median size of the pred SEs (log scale)
 ```
 
-```{r, gam-preds, fig.width=10, fig.height=4} 
+```{r, gam-preds, fig.width=10, fig.height=5} 
 pgam <- preds.gam %>%
   ggplot(aes(x=obs.value,y=fit,color=captured)) + 
   geom_errorbar(aes(ymin=lwr, ymax=upr), width=.1,color='grey') + 
@@ -437,7 +437,7 @@ pgam <- preds.gam %>%
 pgam
 ```
 
-```{r, gam-preds-zoom, fig.width=10, fig.height=4} 
+```{r, gam-preds-zoom, fig.width=10, fig.height=5} 
 pgam + coord_cartesian(xlim=c(0,3e4), ylim=c(0,7e4))
 ```
 
@@ -457,7 +457,7 @@ mean(preds.gam2$captured)# percentage of actual observations inside the CI
 round(median(preds.gam.all2$se.fit),3) # median size of the pred SEs (log scale)
 ```
 
-```{r, gam-preds-2, fig.width=10, fig.height=4} 
+```{r, gam-preds-2, fig.width=10, fig.height=5} 
 pgam2 <- preds.gam2 %>%
   ggplot(aes(x=obs.value,y=fit,color=captured)) + 
   geom_errorbar(aes(ymin=lwr, ymax=upr), width=.1,color='grey') + 
@@ -476,11 +476,11 @@ att.coef = coefficients(final.att.mdl)[c(1:5)]
 fill.coef = coefficients(final.fill.mdl)[c(1:6)]
 ```
 
-```{r, att-prf,fig.height=12}
+```{r, att-prf,fig.height=10}
 plot(final.att.mdl, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
 ```
 
-```{r, fill-prf,fig.height=12}
+```{r, fill-prf,fig.height=10}
 plot(final.fill.mdl, pages = 1, scale=0, shade=TRUE, se=2, bty='n', las=1)
 ```
 
